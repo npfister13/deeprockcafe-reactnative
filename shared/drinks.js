@@ -3,7 +3,7 @@ export const DRINKS = [
         id: 0,
         name: "Mocha",
         price: "$5",
-        image: "./images/coffee-stock-photo-01.jpg",
+        image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false
     },
@@ -11,7 +11,7 @@ export const DRINKS = [
         id: 1,
         name: "White Mocha",
         price: "$5",
-        image: "./images/coffee-stock-photo-01.jpg",
+        image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: true
     },
@@ -19,7 +19,7 @@ export const DRINKS = [
         id: 2,
         name: "Latte",
         price: "$4",
-        image: "./images/coffee-stock-photo-01.jpg",
+        image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false
     },
@@ -27,7 +27,7 @@ export const DRINKS = [
         id: 3,
         name: "Coffee",
         price: "$2",
-        image: "./images/coffee-stock-photo-01.jpg",
+        image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false
     },
@@ -35,7 +35,7 @@ export const DRINKS = [
         id: 4,
         name: "London Fog",
         price: "$5",
-        image: "./images/coffee-stock-photo-01.jpg",
+        image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: true
     },
@@ -43,7 +43,7 @@ export const DRINKS = [
         id: 5,
         name: "Earl Grey",
         price: "$3",
-        image: "./images/coffee-stock-photo-01.jpg",
+        image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false
     }

@@ -3,13 +3,13 @@ import { View, Text, Animated, ScrollView, StyleSheet, Image } from 'react-nativ
 import { Card, Divider } from 'react-native-elements';
 import { DRINKS } from '../shared/drinks';
 
-// function RenderDrinkMenu(drinks) {
-//     return(
-//         <View>
+function RenderDrinkMenu(drinks) {
+    return(
+        <View>
             
-//         </View>
-//     )
-// }
+        </View>
+    )
+}
 
 class Menu extends Component {
     constructor(props){
@@ -38,13 +38,12 @@ class Menu extends Component {
                     <Divider style={{padding: 0, backgroundColor: 'grey'}}/>
                         {
                             this.state.drinks.map((u, i) => {
-                                const theImg = u.image
                                 return(
                                     <View key={i} style={styles.user}>
                                         <Image 
                                             style={styles.image}
                                             resizeMode="cover"
-                                            source={{ uri: './images/coffee-stock-photo-01.jpg' }}
+                                            source={u.image}
                                         />
                                         <Text style={styles.name}>{u.name}</Text>
                                     </View>
