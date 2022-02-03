@@ -13,7 +13,6 @@ import About from './AboutComponent';
 import Order from './OrderComponent';
 import Contact from './ContactComponent';
 
-
 const MainNavigator = createBottomTabNavigator(
     {
         Home: { 
@@ -91,14 +90,12 @@ const MainNavigator = createBottomTabNavigator(
     },
     {
         tabBarOptions: {
-            activeTintColor: 'white',
-            activeBackgroundColor: '#844c48',
-            inactiveTintColor: '#844c48',
+            activeTintColor: '#461f1f',
             labelStyle: {
               fontSize: 12,
             },
             style: {
-              backgroundColor: '#461f1f',
+            //   backgroundColor: '#461f1f',
             },
         }
     }
