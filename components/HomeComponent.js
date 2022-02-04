@@ -23,16 +23,16 @@ class Home extends Component {
                 </View>
                     
                 <View style={{height: 200}}>
-                    <Image style={styles.coffeePlant} source={require('./images/coffee-plant-01.jpg')} />
+                    <Image style={styles.coffeePlant} source={require('../shared/images/coffee-plant-01.jpg')} />
                 </View>
                 <View>
                     <View style={{padding: 20}}>
-                        <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('./images/coffee-stock-photo-01.jpg')} />
+                        <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('../shared/images/coffee-stock-photo-01.jpg')} />
                         <View style={{borderWidth: 1, borderColor: 'grey', alignContent: 'center', alignItems: 'center', backgroundColor: 'white', marginBottom: 20}}>
                             <Text style={styles.infoPanelText}>{'\t\t'}Our coffee is taken straight from the ancient coffee beans from the Ethiopian plateau and light roasted to perfection.</Text>
                         </View>
                     
-                        <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('./images/coffee-stock-photo-03.jpg')} />
+                        <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('../shared/images/coffee-stock-photo-03.jpg')} />
                         <View style={{borderWidth: 1, borderColor: 'grey', alignContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
                             <Text style={styles.infoPanelText}>{'\t\t'}Our brewistas know exactly how to make your coffee your way, just let them know your combination and they'll perfect it.</Text>
                         </View>

@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
 import { View, Text, Animated, ScrollView, StyleSheet, Image } from 'react-native';
-import { Card, Divider } from 'react-native-elements';
+import { Card, Divider, Icon } from 'react-native-elements';
 import { DRINKS } from '../shared/drinks';
+import { FOODS } from '../shared/foods';
 
-function RenderDrinkMenu(drinks) {
-    return(
-        <View>
-            
-        </View>
-    )
+function FavoriteItem(props) {
+
+    const {item} = props;
+
+    if (item.favorite) {
+        return (
+            // <Text>Owner Favorite!</Text>
+            <View>
+                <Text style={styles.favorite}>
+                    
+                    <Icon
+                        name="star"
+                        type="font-awesome"
+                        color="gold"
+                        size={16}
+                    />
+                    Owner favorite! {'\t'}
+                </Text>
+            </View>
+        )
+    }
+    return <Text />
 }
 
 class Menu extends Component {
@@ -16,7 +33,8 @@ class Menu extends Component {
         super(props);
         this.state = {
             // scaleValue: new Animated.Value(0)
-            drinks: DRINKS
+            drinks: DRINKS,
+            foods: FOODS
         };   
     }
     static navigationOptions = {
@@ -33,25 +51,65 @@ class Menu extends Component {
                 <View style={styles.container}>
                     <Card   
                         title={'Drinks'}
-                        style={{marginBottom: 0}}
                     >
-                    <Divider style={{padding: 0, backgroundColor: 'grey'}}/>
-                        {
-                            this.state.drinks.map((u, i) => {
-                                return(
-                                    <View key={i} style={styles.user}>
-                                        <Image 
-                                            style={styles.image}
-                                            resizeMode="cover"
-                                            source={u.image}
-                                        />
-                                        <Text style={styles.name}>{u.name}</Text>
-                                    </View>
-                                );
-                            })
-                        }
+                        <ScrollView>
+                            {
+                                this.state.drinks.map((u, i) => {
+                                    return(
+                                        <View key={i} style={styles.menuItem}>
+                                            <Image
+                                                style={styles.itemImage}
+                                                resizeMode="cover"
+                                                source={u.image}
+                                            />
+                                            <Text style={styles.name}>
+                                                {u.name}
+                                                <Text style={styles.description}>
+                                                    {'\n' + u.description}
+                                                </Text>
+                                                <Text style={{textAlign: 'right'}}>
+                                                    <FavoriteItem item={u}/>
+                                                </Text>
+                                            </Text>
+                                        </View>
+                                    );
+                                })
+                            }
+                        </ScrollView>
+                    </Card>
+                    <Card   
+                        title={'Foods'}
+                    >
+                        <ScrollView>
+                            {
+                                this.state.foods.map((u, i) => {
+                                    return(
+                                        <View key={i} style={styles.menuItem}>
+                                            <Image
+                                                style={styles.itemImage}
+                                                resizeMode="cover"
+                                                source={u.image}
+                                            />
+                                            <Text style={styles.name}>
+                                                {u.name}
+                                                <Text style={styles.description}>
+                                                    {'\n' + u.description}
+                                                </Text>
+                                                <Text style={{textAlign: 'right'}}>
+                                                    <FavoriteItem item={u}/>
+                                                </Text>
+                                            </Text>
+                                        </View>
+                                    );
+                                })
+                            }
+                        </ScrollView>
                         
-                        
+                    </Card>
+                    <Card 
+                        title={'Extras'}
+                    >
+
                     </Card>
                 </View>
             </ScrollView>
@@ -67,19 +125,31 @@ const styles = StyleSheet.create({
         fontSize: 36,
         color: 'white'
     },
-    user: {
+    menuItem: {
         flexDirection: 'row',
+        marginTop: 6,
         marginBottom: 6,
+        alignItems: 'center'
     },
-    image: {
-        width: 30,
-        height: 30,
+    itemImage: {
+        width: 90,
+        height: 90,
         marginRight: 10,
     },
     name: {
-        fontSize: 16,
-        marginTop: 5,
+        fontSize: 22,
+        flex: 1,
+        flexWrap: 'wrap',
     },
+    description: {
+        fontSize: 14,
+    },
+    favorite: {
+        fontSize: 14,
+        color: 'grey',
+        textAlign: 'right'
+    }
+
 })
 
 export default Menu;
