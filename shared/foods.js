@@ -33,7 +33,7 @@ export const FOODS = [
     },
     {
         id: 4,
-        name: "Strawberry-Frosted Toaster Pastry",
+        name: "Strawberry Pastry",
         price: "$5",
         image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
@@ -41,7 +41,7 @@ export const FOODS = [
     },
     {
         id: 5,
-        name: "Blueberry-Frosted Toaster Pastry",
+        name: "Blueberry Pastry",
         price: "$5",
         image: require("./images/coffee-stock-photo-01.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",

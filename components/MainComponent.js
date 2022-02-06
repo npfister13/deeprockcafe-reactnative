@@ -44,20 +44,20 @@ const MainNavigator = createBottomTabNavigator(
                 ) 
             }
         },
-        About: { 
-            screen: About,
-            navigationOptions: {
-                tabBarIcon: ({tintColor}) => (
-                    <Icon
-                        name='info'
-                        type='font-awesome'
-                        size={24}
-                        //tintColor has grey for inactive and blue for active by default. it can be changed - check documentation
-                        color={tintColor}
-                    />
-                ) 
-            }
-        },
+        // About: { 
+        //     screen: About,
+        //     navigationOptions: {
+        //         tabBarIcon: ({tintColor}) => (
+        //             <Icon
+        //                 name='info'
+        //                 type='font-awesome'
+        //                 size={24}
+        //                 //tintColor has grey for inactive and blue for active by default. it can be changed - check documentation
+        //                 color={tintColor}
+        //             />
+        //         ) 
+        //     }
+        // },
         Contact: { 
             screen: Contact,
             navigationOptions: {

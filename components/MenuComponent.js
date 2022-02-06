@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Animated, ScrollView, StyleSheet, Image } from 'react-native';
-import { Card, Divider, Icon } from 'react-native-elements';
+import { Card, Icon } from 'react-native-elements';
 import { DRINKS } from '../shared/drinks';
 import { FOODS } from '../shared/foods';
+import RenderHeader from './HeaderComponent';
 
 function FavoriteItem(props) {
 
@@ -45,9 +46,7 @@ class Menu extends Component {
         return (
             
             <ScrollView>
-                <View style={{backgroundColor: '#461f1f', height: 80, alignContent: 'center', alignItems: 'center', padding: 20}}>
-                    <Text style={styles.cafe}>Menu</Text>
-                </View>
+                <RenderHeader title={"Menu"} />
                 <View style={styles.container}>
                     <Card   
                         title={'Drinks'}
@@ -121,10 +120,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    cafe: {
-        fontSize: 36,
-        color: 'white'
-    },
     menuItem: {
         flexDirection: 'row',
         marginTop: 6,
@@ -132,8 +127,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     itemImage: {
-        width: 90,
-        height: 90,
+        width: 80,
+        height: 80,
         marginRight: 10,
     },
     name: {
