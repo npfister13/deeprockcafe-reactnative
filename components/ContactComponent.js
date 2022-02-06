@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Animated, ScrollView, StyleSheet, Button, TextInput, Alert  } from 'react-native';
-import { Card, Input, } from 'react-native-elements';
+import { Card, } from 'react-native-elements';
 import RenderHeader from './HeaderComponent';
 
 class About extends Component {
