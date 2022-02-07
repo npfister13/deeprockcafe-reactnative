@@ -5,28 +5,28 @@ import RenderHeader from './HeaderComponent';
 import { DRINKS } from '../shared/drinks';
 import { FOODS } from '../shared/foods';
 
-function RenderFood(props) {
+function RenderFood(food) {
 
-    const {foods} = props;
+    const {foods} = food;
 
-    const foodList = foods.map(food => {
+    const foodList = foods.map(foodItem => {
         return (
-            <View key={food.id} style={{flexDirection: 'row', padding: 10}}>
+            <View key={foodItem.id} style={{flexDirection: 'row', padding: 10}}>
                 <Image
                     style={styles.itemImage}
                     resizeMode="cover"
-                    source={food.image}
+                    source={foodItem.image}
                 />
                 <Text style={styles.name}>
-                    {food.name}
+                    {foodItem.name}
                     <Text style={styles.price}>
-                        {'\n' + food.price}
+                        {'\n' + foodItem.price}
                     </Text>
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        props.onShowModal() 
-                        props.onAddButton(food)
+                        food.onShowModal() 
+                        food.onAddButton(foodItem)
                     }}  
                     style={{width: 60, height: 40, backgroundColor: 'white', alignSelf: 'center'}}
                 >
@@ -42,6 +42,87 @@ function RenderFood(props) {
     )
 }
 
+function RenderDrinks(drink) {
+
+    const {drinks} = drink;
+
+    const drinkList = drinks.map(drinkItem => {
+        return (
+            <View key={drinkItem.id} style={{flexDirection: 'row', padding: 10}}>
+                <Image
+                    style={styles.itemImage}
+                    resizeMode="cover"
+                    source={drinkItem.image}
+                />
+                <Text style={styles.name}>
+                    {drinkItem.name}
+                    <Text style={styles.price}>
+                        {'\n' + drinkItem.price}
+                    </Text>
+                </Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        drink.onShowModal() 
+                        drink.onAddButton(drinkItem)
+                    }}  
+                    style={{width: 60, height: 40, backgroundColor: 'white', alignSelf: 'center'}}
+                >
+                    <Text 
+                        style={styles.addButton}
+                    >Add</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    })
+    return (
+        <View style={{backgroundColor: '#ececec', borderWidth: 2, borderColor: '#e0e1e2', borderRadius: 5, margin: 10}}>{drinkList}</View>
+    )
+}
+
+function RenderOrderArray(order) {
+
+    const {orderArray} = order;
+
+    const orderList = orderArray.map(orderItem => {
+        return (
+            <View key={orderItem.id} style={{flexDirection: 'row', padding: 10}}>
+                <Image
+                    style={styles.itemImage}
+                    resizeMode="cover"
+                    source={orderItem.image}
+                />
+                <Text style={styles.name}>
+                    {orderItem.name}
+                    <Text style={styles.price}>
+                        {'\n' + orderItem.price}
+                    </Text>
+                </Text>
+                <TouchableOpacity
+                    // onPress={() => {
+                    //     drink.onAddButton(orderItem)
+                    // }}  
+                    style={{width: 60, height: 40, backgroundColor: 'white', alignSelf: 'center'}}
+                >
+                    <Text 
+                        style={styles.addButton}
+                    >Remove</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    })
+
+    return (
+        <ScrollView>
+            <View>
+                <Card style={styles.orderCard}>
+                    {orderList}
+                </Card>
+            </View>
+        </ScrollView>
+    )
+
+}
+
 class Order extends Component {
     constructor(props){
         super(props);
@@ -52,14 +133,17 @@ class Order extends Component {
             foods: FOODS,
             drinkList: [],
             foodList: [],
-            orderArray: [{text:'my obj', otherText:'second part of obj'}],
+            orderArray: [],
             
         };   
     }
+
+    removeFromOrder(item){
+
+    }
     
-    addToOrder(food){
-        this.setState({orderArray: [...this.state.orderArray, food]});
-        console.log(this.state.orderArray)
+    addToOrder(item){
+        this.setState({orderArray: [...this.state.orderArray, item]});
     };
 
     toggleModal() {
@@ -71,6 +155,18 @@ class Order extends Component {
     }
     
     render() {
+        console.log(this.state.orderArray.length)
+        if (this.state.orderArray.length > 0) {
+            return (
+                <ScrollView style={{backgroundColor: '#ececec'}}>
+                    <RenderHeader title={"Order"} />
+                    <RenderOrderArray
+                        orderArray={this.state.orderArray}
+                    />
+                </ScrollView>
+            )
+        }
+
         return (
             <ScrollView style={{backgroundColor: '#ececec'}}>
                 <RenderHeader title={"Order"} />
@@ -82,6 +178,12 @@ class Order extends Component {
                         >
                             <Text>Start order</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => console.log(this.state.orderArray)}
+                        >
+                            <Text>Console.log</Text>
+                        </TouchableOpacity>
                     </Card>
                     <Modal
                         animationType={'slide'}
@@ -89,18 +191,29 @@ class Order extends Component {
                         visible={this.state.showModal}
                         onRequestClose={() => this.toggleModal()} 
                     >
-                        
                             <ScrollView>
-                                <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Food</Text>
+                                <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Foods</Text>
                                 <RenderFood 
                                     foods={this.state.foods} 
                                     onShowModal={() => this.toggleModal()}
-                                    orderArray={this.state.orderArray} 
-                                    onAddButton={() => this.addToOrder()}
+                                    onAddButton={food => this.addToOrder(food)}
+                                />
+                                <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Drinks</Text>
+                                <RenderDrinks 
+                                    drinks={this.state.drinks} 
+                                    onShowModal={() => this.toggleModal()}
+                                    onAddButton={drink => this.addToOrder(drink)}
                                 />
                             </ScrollView>
                     </Modal>
                 </View>
+                {/* <RenderTotalOrder 
+                    foods={this.state.foods}
+                    drinks={this.state.drinks}
+                    onShowModal={() => this.toggleModal()}
+                    orderArray={this.state.orderArray}
+                    onAddButton={item => this.addToOrder(item)}
+                /> */}
             </ScrollView>
         );
     }
