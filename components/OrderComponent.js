@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Animated, ScrollView, StyleSheet, Button, TextInput, Alert, TouchableOpacity, Modal  } from 'react-native';
-import { Card, Input, } from 'react-native-elements';
+import { Card, Input, Icon } from 'react-native-elements';
 import RenderHeader from './HeaderComponent';
 import { DRINKS } from '../shared/drinks';
 import { FOODS } from '../shared/foods';
+import cloneDeep from 'lodash/cloneDeep';
 
 function RenderFood(food) {
 
     const {foods} = food;
 
-    const foodList = foods.map(foodItem => {
+    const foodList = foods.map((foodItem, i) => {
         return (
-            <View key={foodItem.id} style={{flexDirection: 'row', padding: 10}}>
+            <View key={i} style={{flexDirection: 'row', padding: 10}}>
                 <Image
                     style={styles.itemImage}
                     resizeMode="cover"
@@ -25,13 +26,13 @@ function RenderFood(food) {
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        food.onShowModal() 
+                        food.onShowOrderModal() 
                         food.onAddButton(foodItem)
                     }}  
                     style={{width: 60, height: 40, backgroundColor: 'white', alignSelf: 'center'}}
                 >
                     <Text 
-                        style={styles.addButton}
+                        style={styles.addText}
                     >Add</Text>
                 </TouchableOpacity>
             </View>
@@ -46,9 +47,9 @@ function RenderDrinks(drink) {
 
     const {drinks} = drink;
 
-    const drinkList = drinks.map(drinkItem => {
+    const drinkList = drinks.map((drinkItem, i) => {
         return (
-            <View key={drinkItem.id} style={{flexDirection: 'row', padding: 10}}>
+            <View key={i} style={{flexDirection: 'row', padding: 10}}>
                 <Image
                     style={styles.itemImage}
                     resizeMode="cover"
@@ -62,13 +63,13 @@ function RenderDrinks(drink) {
                 </Text>
                 <TouchableOpacity
                     onPress={() => {
-                        drink.onShowModal() 
+                        drink.onShowOrderModal() 
                         drink.onAddButton(drinkItem)
                     }}  
                     style={{width: 60, height: 40, backgroundColor: 'white', alignSelf: 'center'}}
                 >
                     <Text 
-                        style={styles.addButton}
+                        style={styles.addText}
                     >Add</Text>
                 </TouchableOpacity>
             </View>
@@ -83,9 +84,9 @@ function RenderOrderArray(order) {
 
     const {orderArray} = order;
 
-    const orderList = orderArray.map(orderItem => {
+    const orderList = orderArray.map((orderItem, i) => {
         return (
-            <View key={orderItem.id} style={{flexDirection: 'row', padding: 10}}>
+            <View key={i} style={{flexDirection: 'row', padding: 10}}>
                 <Image
                     style={styles.itemImage}
                     resizeMode="cover"
@@ -97,16 +98,36 @@ function RenderOrderArray(order) {
                         {'\n' + orderItem.price}
                     </Text>
                 </Text>
-                <TouchableOpacity
-                    // onPress={() => {
-                    //     drink.onAddButton(orderItem)
-                    // }}  
-                    style={{width: 60, height: 40, backgroundColor: 'white', alignSelf: 'center'}}
-                >
-                    <Text 
-                        style={styles.addButton}
-                    >Remove</Text>
-                </TouchableOpacity>
+                <View>
+                    <View
+                        style={{width: 30, height: 35, backgroundColor: 'lightgrey', borderRadius: 5, borderColor: 'white', alignSelf: 'center', justifyContent: 'center', margin: 2}}
+                    >
+                        <Icon
+                           name='pencil'
+                           type="font-awesome"
+                           size={26}
+                           color={'gray'}
+                           onPress={() => {
+                                // const item = orderItem;
+                                order.onShowCustomizeModal()
+                            }}
+                        />
+                    </View>
+                    <View
+                        style={{width: 30, height: 35, backgroundColor: '#de4747', borderRadius: 5, alignSelf: 'center', justifyContent: 'center', margin: 2 }}
+                    >
+                        <Icon
+                           name='trash-o'
+                           type="font-awesome"
+                           color='white'
+                           size={26}
+                           onPress={() => {
+                                order.onRemoveItem(orderItem)
+                            }}
+                        />
+                    </View>
+                    
+                </View>
             </View>
         )
     })
@@ -123,12 +144,24 @@ function RenderOrderArray(order) {
 
 }
 
+function RenderItem(item) {
+    
+    console.log(item)
+
+    return(
+        <Card style={styles.orderCard}>
+            {/* {the} */}
+        </Card>
+    )
+}
+
 class Order extends Component {
     constructor(props){
         super(props);
         this.state = {
             // scaleValue: new Animated.Value(0),
-            showModal: false,
+            showOrderModal: false,
+            showCustomizeModal: false,
             drinks: DRINKS,
             foods: FOODS,
             drinkList: [],
@@ -139,15 +172,26 @@ class Order extends Component {
     }
 
     removeFromOrder(item){
-
+        this.setState({orderArray: this.state.orderArray.filter((orderArray) => {
+            return orderArray !== item
+        })});
     }
     
     addToOrder(item){
-        this.setState({orderArray: [...this.state.orderArray, item]});
+        const oldItem = cloneDeep(item)
+        const index = this.state.orderArray.findIndex((findItem) => findItem.id === oldItem.id)
+        
+        
+        this.setState({orderArray: [...this.state.orderArray, oldItem]});
+
     };
 
-    toggleModal() {
-        this.setState({showModal: !this.state.showModal})
+    toggleOrderModal() {
+        this.setState({showOrderModal: !this.state.showOrderModal})
+    }
+
+    toggleCustomizeModal() {
+        this.setState({showCustomizeModal: !this.state.showCustomizeModal})
     }
 
     static navigationOptions = {
@@ -155,14 +199,65 @@ class Order extends Component {
     }
     
     render() {
-        console.log(this.state.orderArray.length)
         if (this.state.orderArray.length > 0) {
             return (
                 <ScrollView style={{backgroundColor: '#ececec'}}>
                     <RenderHeader title={"Order"} />
                     <RenderOrderArray
                         orderArray={this.state.orderArray}
+                        onRemoveItem={(item) => this.removeFromOrder(item)}
+                        onShowCustomizeModal={() => this.toggleCustomizeModal()}
                     />
+                    <Card style={styles.orderCard}>
+                        <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => {
+                                    this.toggleOrderModal()
+                                }}
+                            >
+                            <Text>Order more</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => console.log(this.state.orderArray)}
+                        >
+                            <Text>Console.log</Text>
+                        </TouchableOpacity>
+                    </Card>
+                    <Modal
+                        animationType={'slide'}
+                        transparent={false}
+                        visible={this.state.showOrderModal}
+                        onRequestClose={() => this.toggleOrderModal()} 
+                    >
+                        <ScrollView>
+                            <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Foods</Text>
+                            <RenderFood 
+                                foods={this.state.foods} 
+                                onShowOrderModal={() => this.toggleOrderModal()}
+                                onAddButton={food => this.addToOrder(food)}
+                            />
+                            <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Drinks</Text>
+                            <RenderDrinks 
+                                drinks={this.state.drinks} 
+                                onShowOrderModal={() => this.toggleOrderModal()}
+                                onAddButton={drink => this.addToOrder(drink)}
+                            />
+                        </ScrollView>
+                    </Modal>
+                    <Modal
+                        animationType={'slide'}
+                        transparent={false}
+                        visible={this.state.showCustomizeModal}
+                        onRequestClose={() => this.toggleCustomizeModal()} 
+                    >
+                        <View>
+                            {/* <RenderItem 
+                                // item={(item)}
+                                onShowCustomizeModal={() => this.toggleCustomizeModal()}
+                            /> */}
+                        </View>
+                    </Modal>
                 </ScrollView>
             )
         }
@@ -174,7 +269,7 @@ class Order extends Component {
                     <Card style={styles.orderCard}>
                         <TouchableOpacity
                             style={styles.button}
-                            onPress={() => this.toggleModal()}
+                            onPress={() => this.toggleOrderModal()}
                         >
                             <Text>Start order</Text>
                         </TouchableOpacity>
@@ -188,20 +283,20 @@ class Order extends Component {
                     <Modal
                         animationType={'slide'}
                         transparent={false}
-                        visible={this.state.showModal}
-                        onRequestClose={() => this.toggleModal()} 
+                        visible={this.state.showOrderModal}
+                        onRequestClose={() => this.toggleOrderModal()} 
                     >
                             <ScrollView>
                                 <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Foods</Text>
                                 <RenderFood 
                                     foods={this.state.foods} 
-                                    onShowModal={() => this.toggleModal()}
+                                    onShowOrderModal={() => this.toggleOrderModal()}
                                     onAddButton={food => this.addToOrder(food)}
                                 />
                                 <Text style={{textAlign: 'center', fontSize: 24, fontWeight: 'bold'}}>Drinks</Text>
                                 <RenderDrinks 
                                     drinks={this.state.drinks} 
-                                    onShowModal={() => this.toggleModal()}
+                                    onShowOrderModal={() => this.toggleOrderModal()}
                                     onAddButton={drink => this.addToOrder(drink)}
                                 />
                             </ScrollView>
@@ -210,7 +305,7 @@ class Order extends Component {
                 {/* <RenderTotalOrder 
                     foods={this.state.foods}
                     drinks={this.state.drinks}
-                    onShowModal={() => this.toggleModal()}
+                    onShowOrderModal={() => this.toggleOrderModal()}
                     orderArray={this.state.orderArray}
                     onAddButton={item => this.addToOrder(item)}
                 /> */}
@@ -250,6 +345,7 @@ const styles = StyleSheet.create({
     },
     menuItem: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         marginTop: 6,
         marginBottom: 6,
         alignItems: 'center'
@@ -267,12 +363,19 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 20,
     },
-    addButton: {
+    addText: {
+        alignSelf: 'center',
+        alignItems: 'center', 
+        padding: 10, 
+        fontSize: 16
+    },
+    removeText: {
         alignSelf: 'center',
         alignItems: 'center', 
         padding: 10, 
         fontSize: 16
     }
+    
 })
 
 export default Order;
