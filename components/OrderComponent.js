@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { View, Text, Image, Animated, ScrollView, StyleSheet, Button, TextInput, Alert, TouchableOpacity, Modal  } from 'react-native';
-import { Card, Input, Icon } from 'react-native-elements';
+import { Card, Input, Icon, CheckBox } from 'react-native-elements';
 import RenderHeader from './HeaderComponent';
 import { DRINKS } from '../shared/drinks';
 import { FOODS } from '../shared/foods';
+import { EXTRAS } from '../shared/extras';
 import cloneDeep from 'lodash/cloneDeep';
 
 function RenderFood(food) {
@@ -21,7 +22,7 @@ function RenderFood(food) {
                 <Text style={styles.name}>
                     {foodItem.name}
                     <Text style={styles.price}>
-                        {'\n' + foodItem.price}
+                        {'\n$' + foodItem.price.toFixed(2)}
                     </Text>
                 </Text>
                 <TouchableOpacity
@@ -58,7 +59,7 @@ function RenderDrinks(drink) {
                 <Text style={styles.name}>
                     {drinkItem.name}
                     <Text style={styles.price}>
-                        {'\n' + drinkItem.price}
+                        {'\n$' + drinkItem.price.toFixed(2)}
                     </Text>
                 </Text>
                 <TouchableOpacity
@@ -95,7 +96,7 @@ function RenderOrderArray(order) {
                 <Text style={styles.name}>
                     {orderItem.name}
                     <Text style={styles.price}>
-                        {'\n' + orderItem.price}
+                        {'\n$' + orderItem.price.toFixed(2)}
                     </Text>
                 </Text>
                 <View>
@@ -108,8 +109,7 @@ function RenderOrderArray(order) {
                            size={26}
                            color={'gray'}
                            onPress={() => {
-                                // const item = orderItem;
-                                order.onShowCustomizeModal()
+                                order.onShowCustomizeModal(orderItem)
                             }}
                         />
                     </View>
@@ -146,13 +146,85 @@ function RenderOrderArray(order) {
 
 function RenderItem(item) {
     
-    console.log(item)
+    const {customizeItem} = item;
+    const renderedItem = customizeItem[0]
+    
+    if (renderedItem.extras) {
+        const extraList = renderedItem.extras.map((extraItem, i) => {
+            const [checked, toggleChecked] = useState(extraItem.checked);
+            return(
+                <View key={i}>
+                    <CheckBox 
+                        key={Math.random()}
+                        title={extraItem.name}
+                        checked={checked}
+                        onPress={() => {
+                            toggleChecked(!checked)
+                            extraItem.checked = !checked;
+                        }}
+                        containerStyle={styles.formCheckbox}
+                    />
+                </View>
+            )
+        })
+        return(
+            <ScrollView>
+                <Card style={styles.orderCard}>
+                    <Image
+                        style={{width: 325, height: 300, alignSelf: 'center'}}
+                        source={renderedItem.image}
+                    />
+                    <Text
+                        style={{fontSize: 22, alignSelf: 'center'}}
+                    >{renderedItem.name}</Text>
+                    <Text>Total price: ${renderedItem.price.toFixed(2)}</Text>
+                </Card>
+                {extraList}
+                {/* <RadioButton /> */}
+            </ScrollView>
+        )
+    }
+    
 
-    return(
-        <Card style={styles.orderCard}>
-            {/* {the} */}
-        </Card>
+    return (
+        <ScrollView>
+            <Card style={styles.orderCard}>
+                <Image
+                    style={{width: 325, height: 300, alignSelf: 'center'}}
+                    source={renderedItem.image}
+                />
+                <Text
+                    style={{fontSize: 22, alignSelf: 'center'}}
+                >{renderedItem.name}</Text>
+                <Text>Total price: ${renderedItem.price.toFixed(2)}</Text>
+            </Card>
+        </ScrollView>
     )
+}
+
+function RadioButton(props) {
+    return (
+        <View style={[{
+          height: 24,
+          width: 24,
+          borderRadius: 12,
+          borderWidth: 2,
+          borderColor: '#000',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }, props.style]}>
+          {
+            props.selected ?
+              <View style={{
+                height: 12,
+                width: 12,
+                borderRadius: 6,
+                backgroundColor: '#000',
+              }}/>
+              : null
+          }
+        </View>
+    );
 }
 
 class Order extends Component {
@@ -167,7 +239,9 @@ class Order extends Component {
             drinkList: [],
             foodList: [],
             orderArray: [],
-            
+            customizeItem: [],
+            totalPrice: 0,
+            remember: false
         };   
     }
 
@@ -175,14 +249,13 @@ class Order extends Component {
         this.setState({orderArray: this.state.orderArray.filter((orderArray) => {
             return orderArray !== item
         })});
+        this.setState({totalPrice: this.state.totalPrice -= item.price})
     }
     
     addToOrder(item){
-        const oldItem = cloneDeep(item)
-        const index = this.state.orderArray.findIndex((findItem) => findItem.id === oldItem.id)
-        
-        
+        const oldItem = cloneDeep(item)   
         this.setState({orderArray: [...this.state.orderArray, oldItem]});
+        this.setState({totalPrice: this.state.totalPrice += oldItem.price})
 
     };
 
@@ -190,8 +263,10 @@ class Order extends Component {
         this.setState({showOrderModal: !this.state.showOrderModal})
     }
 
-    toggleCustomizeModal() {
+    toggleCustomizeModal(item) {
+        // console.log(JSON.stringify(item))
         this.setState({showCustomizeModal: !this.state.showCustomizeModal})
+        this.setState({customizeItem: [...this.state.customizeItem, item]})
     }
 
     static navigationOptions = {
@@ -206,8 +281,11 @@ class Order extends Component {
                     <RenderOrderArray
                         orderArray={this.state.orderArray}
                         onRemoveItem={(item) => this.removeFromOrder(item)}
-                        onShowCustomizeModal={() => this.toggleCustomizeModal()}
+                        onShowCustomizeModal={(order) => this.toggleCustomizeModal(order)}
                     />
+                    <Card style={styles.orderCard}>
+                        <Text>Total price: ${this.state.totalPrice.toFixed(2)}</Text>
+                    </Card>
                     <Card style={styles.orderCard}>
                         <TouchableOpacity
                                 style={styles.button}
@@ -249,13 +327,18 @@ class Order extends Component {
                         animationType={'slide'}
                         transparent={false}
                         visible={this.state.showCustomizeModal}
-                        onRequestClose={() => this.toggleCustomizeModal()} 
+                        onRequestClose={() => {
+                            this.toggleCustomizeModal()
+                            this.setState({customizeItem: this.state.customizeItem.filter((customizeItem) => {
+                                return customizeItem !== this.state.customizeItem[0]
+                            })});
+                        }} 
                     >
                         <View>
-                            {/* <RenderItem 
-                                // item={(item)}
-                                onShowCustomizeModal={() => this.toggleCustomizeModal()}
-                            /> */}
+                            <RenderItem 
+                                customizeItem={this.state.customizeItem}
+                                onShowCustomizeModal={(order) => this.toggleCustomizeModal(order)}
+                            />
                         </View>
                     </Modal>
                 </ScrollView>
@@ -279,6 +362,12 @@ class Order extends Component {
                         >
                             <Text>Console.log</Text>
                         </TouchableOpacity>
+                        <CheckBox 
+                            title='remember me'
+                            center
+                            checked={this.state.remember}
+                            onPress={() => this.setState({remember: !this.state.remember})}
+                        />
                     </Card>
                     <Modal
                         animationType={'slide'}
@@ -374,7 +463,11 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         padding: 10, 
         fontSize: 16
-    }
+    },
+    formCheckbox: {
+        margin: 8,
+        backgroundColor: null
+    },
     
 })
 
