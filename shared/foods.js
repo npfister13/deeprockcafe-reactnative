@@ -3,7 +3,7 @@ export const FOODS = [
         
         name: "Bagel",
         price: 3.50,
-        image: require('../shared/images/chocolate-muffin.jpg'),
+        image: require('../shared/images/bagel.jpg'),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false,
         bagelType: [
@@ -79,7 +79,7 @@ export const FOODS = [
         
         name: "Strawberry Pastry",
         price: 5,
-        image: require("../shared/images/chocolate-muffin.jpg"),
+        image: require("../shared/images/strawberry-pastry.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: true
     },
@@ -87,7 +87,7 @@ export const FOODS = [
         
         name: "Blueberry Pastry",
         price: 5,
-        image: require("../shared/images/chocolate-muffin.jpg"),
+        image: require("../shared/images/strawberry-pastry.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false
     }

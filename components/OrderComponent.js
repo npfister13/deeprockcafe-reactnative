@@ -1,12 +1,10 @@
 import React, { Component, useState } from 'react';
-import { View, Text, Image, Animated, ScrollView, StyleSheet, Button, TextInput, Alert, TouchableOpacity, Modal  } from 'react-native';
+import { View, Text, Image, Animated, ScrollView, StyleSheet, Alert, TouchableOpacity, Modal  } from 'react-native';
 import { Card, Input, Icon, CheckBox } from 'react-native-elements';
 import RenderHeader from './HeaderComponent';
 import { DRINKS } from '../shared/drinks';
 import { FOODS } from '../shared/foods';
-import { EXTRAS } from '../shared/extras';
 import cloneDeep from 'lodash/cloneDeep';
-import { render } from 'react-dom';
 
 function RenderFood(food) {
 
@@ -314,9 +312,7 @@ class Order extends Component {
     }
 
     adjustPrice(item) {
-        console.log(this.state.totalPrice)
         this.setState({totalPrice: this.state.totalPrice += item})
-        console.log(this.state.totalPrice)
     }
 
     resetOrder(){

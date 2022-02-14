@@ -61,7 +61,7 @@ export const DRINKS = [
     {
         name: "White Mocha",
         price: 5,
-        image: require("./images/coffee-stock-photo-01.jpg"),
+        image: require("./images/coffee-stock-photo-02.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: true,
         extras: [
@@ -120,7 +120,7 @@ export const DRINKS = [
     {
         name: "Latte",
         price: 4,
-        image: require("./images/coffee-stock-photo-01.jpg"),
+        image: require("./images/coffee-stock-photo-03.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false,
         extras: [
@@ -179,7 +179,7 @@ export const DRINKS = [
     {
         name: "Coffee",
         price: 2,
-        image: require("./images/coffee-stock-photo-01.jpg"),
+        image: require("./images/coffee-stock-photo-02.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false,
         extras: [
@@ -297,7 +297,7 @@ export const DRINKS = [
     {
         name: "Earl Grey",
         price: 3,
-        image: require("./images/coffee-stock-photo-01.jpg"),
+        image: require("./images/coffee-stock-photo-03.jpg"),
         description: "Lorem ipsum dolor sit amet. In a nisl eu justo bibendum tempus. Donec.",
         favorite: false,
         extras: [
