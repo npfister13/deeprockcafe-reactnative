@@ -105,11 +105,6 @@ class Menu extends Component {
                         </ScrollView>
                         
                     </Card>
-                    <Card 
-                        title={'Extras'}
-                    >
-
-                    </Card>
                 </View>
             </ScrollView>
         );
