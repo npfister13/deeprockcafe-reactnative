@@ -11,7 +11,7 @@ function FavoriteItem(props) {
 
     if (item.favorite) {
         return (
-            // <Text>Owner Favorite!</Text>
+            // <Text>Staff Favorite!</Text>
             <View>
                 <Text style={styles.favorite}>
                     
@@ -21,7 +21,7 @@ function FavoriteItem(props) {
                         color="gold"
                         size={16}
                     />
-                    Owner favorite! {'\t'}
+                    Staff favorite! {'\t'}
                 </Text>
             </View>
         )

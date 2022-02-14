@@ -27,14 +27,16 @@ class Home extends Component {
                 </View>
                 <View>
                     <View style={{padding: 20}}>
-                        <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('../shared/images/coffee-stock-photo-01.jpg')} />
+                        <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('../shared/images/coffee-stock-photo-02.jpg')} />
                         <View style={{borderWidth: 1, borderColor: 'grey', alignContent: 'center', alignItems: 'center', backgroundColor: 'white', marginBottom: 20}}>
-                            <Text style={styles.infoPanelText}>{'\t\t'}Our coffee is taken straight from the ancient coffee beans from the Ethiopian plateau and light roasted to perfection.</Text>
+                            <Text style={styles.infoPanelHeader}>Featured Item</Text>
+                            <Text style={styles.infoPanelText}>{'\t\t'}Try a hot cup of coffee, freshly made, always!</Text>
                         </View>
                     
                         <Image style={{maxHeight: '100%', maxWidth: '100%', width: 400, height: 200}} source={require('../shared/images/coffee-stock-photo-03.jpg')} />
                         <View style={{borderWidth: 1, borderColor: 'grey', alignContent: 'center', alignItems: 'center', backgroundColor: 'white'}}>
-                            <Text style={styles.infoPanelText}>{'\t\t'}Our brewistas know exactly how to make your coffee your way, just let them know your combination and they'll perfect it.</Text>
+                            <Text style={styles.infoPanelHeader}>Staff Favorites</Text>
+                            <Text style={styles.infoPanelText}>{'\t\t'}Some of our products are so good, our staff have their own favorites! Check them out today</Text>
                         </View>
                     </View>
                 </View>
@@ -59,6 +61,11 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
+    infoPanelHeader: {
+        fontFamily: 'Roboto',
+        fontSize: 26,
+        textAlign: 'center'
+    },
     infoPanelText: {
         fontFamily: 'Roboto',
         fontSize: 20,

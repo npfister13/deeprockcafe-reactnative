@@ -6,6 +6,7 @@ import { DRINKS } from '../shared/drinks';
 import { FOODS } from '../shared/foods';
 import { EXTRAS } from '../shared/extras';
 import cloneDeep from 'lodash/cloneDeep';
+import { render } from 'react-dom';
 
 function RenderFood(food) {
 
@@ -149,6 +150,41 @@ function RenderItem(item) {
     const {customizeItem} = item;
     const renderedItem = customizeItem[0]
     
+    // if (renderedItem.bagelType) {
+    //     const bagelTypeList = renderedItem.bagelType.map((bagel, i) => {
+    //         const [checked, toggleChecked] = useState(bagel.checked);
+    //         return (
+    //             <View key={i}>
+    //                 <CheckBox
+    //                     key={Math.random()}
+    //                     title={bagel.name}
+    //                     checked={checked}
+    //                     onPress={() => {
+    //                         toggleChecked(!checked)
+    //                         bagel.checked = !checked;
+    //                     }}
+    //                     containerStyle={styles.formCheckbox}
+    //                 />
+    //             </View>
+    //         )
+    //     })
+    //     return(
+    //         <ScrollView>
+    //             <Card style={styles.orderCard}>
+    //                 <Image
+    //                     style={{width: 325, height: 300, alignSelf: 'center'}}
+    //                     source={renderedItem.image}
+    //                 />
+    //                 <Text
+    //                     style={{fontSize: 22, alignSelf: 'center'}}
+    //                 >{renderedItem.name}</Text>
+    //                 <Text>Total price: ${renderedItem.price.toFixed(2)}</Text>
+    //             </Card>
+    //             {bagelTypeList}
+    //         </ScrollView>
+    //     )
+    // }
+
     if (renderedItem.extras) {
         const extraList = renderedItem.extras.map((extraItem, i) => {
             const [checked, toggleChecked] = useState(extraItem.checked);
@@ -161,12 +197,22 @@ function RenderItem(item) {
                         onPress={() => {
                             toggleChecked(!checked)
                             extraItem.checked = !checked;
+                            if (extraItem.checked === true) {
+                                item.onAdjustPrice(renderedItem.price * -1)
+                                renderedItem.price += extraItem.price
+                                item.onAdjustPrice(renderedItem.price)
+                            } else {
+                                item.onAdjustPrice(renderedItem.price * -1)
+                                renderedItem.price -= extraItem.price
+                                item.onAdjustPrice(renderedItem.price)
+                            }
                         }}
                         containerStyle={styles.formCheckbox}
                     />
                 </View>
             )
         })
+        
         return(
             <ScrollView>
                 <Card style={styles.orderCard}>
@@ -177,29 +223,29 @@ function RenderItem(item) {
                     <Text
                         style={{fontSize: 22, alignSelf: 'center'}}
                     >{renderedItem.name}</Text>
-                    <Text>Total price: ${renderedItem.price.toFixed(2)}</Text>
+                    <Text>Price: ${renderedItem.price.toFixed(2)}</Text>
                 </Card>
                 {extraList}
-                {/* <RadioButton /> */}
+            </ScrollView>
+        )
+    } else {
+        return (
+            <ScrollView>
+                <Card style={styles.orderCard}>
+                    <Image
+                        style={{width: 325, height: 300, alignSelf: 'center'}}
+                        source={renderedItem.image}
+                    />
+                    <Text
+                        style={{fontSize: 22, alignSelf: 'center'}}
+                    >
+                        {renderedItem.name}
+                    </Text>
+                    <Text>Total price: ${renderedItem.price.toFixed(2)}</Text>
+                </Card>
             </ScrollView>
         )
     }
-    
-
-    return (
-        <ScrollView>
-            <Card style={styles.orderCard}>
-                <Image
-                    style={{width: 325, height: 300, alignSelf: 'center'}}
-                    source={renderedItem.image}
-                />
-                <Text
-                    style={{fontSize: 22, alignSelf: 'center'}}
-                >{renderedItem.name}</Text>
-                <Text>Total price: ${renderedItem.price.toFixed(2)}</Text>
-            </Card>
-        </ScrollView>
-    )
 }
 
 function RadioButton(props) {
@@ -241,7 +287,6 @@ class Order extends Component {
             orderArray: [],
             customizeItem: [],
             totalPrice: 0,
-            remember: false
         };   
     }
 
@@ -256,7 +301,6 @@ class Order extends Component {
         const oldItem = cloneDeep(item)   
         this.setState({orderArray: [...this.state.orderArray, oldItem]});
         this.setState({totalPrice: this.state.totalPrice += oldItem.price})
-
     };
 
     toggleOrderModal() {
@@ -267,6 +311,20 @@ class Order extends Component {
         // console.log(JSON.stringify(item))
         this.setState({showCustomizeModal: !this.state.showCustomizeModal})
         this.setState({customizeItem: [...this.state.customizeItem, item]})
+    }
+
+    adjustPrice(item) {
+        console.log(this.state.totalPrice)
+        this.setState({totalPrice: this.state.totalPrice += item})
+        console.log(this.state.totalPrice)
+    }
+
+    resetOrder(){
+        this.setState({
+            totalPrice: 0,
+            orderArray: [],
+            customizeItem: [],
+        })
     }
 
     static navigationOptions = {
@@ -295,11 +353,28 @@ class Order extends Component {
                             >
                             <Text>Order more</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={styles.button}
                             onPress={() => console.log(this.state.orderArray)}
                         >
                             <Text>Console.log</Text>
+                        </TouchableOpacity> */}
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                                Alert.alert(
+                                    'Your order has been placed!',
+                                    `You total is $${this.state.totalPrice.toFixed(2)} at time of checkout`,
+                                    [
+                                        {
+                                            text: 'OK',
+                                        }
+                                    ]
+                                )
+                                this.resetOrder();
+                            }}
+                        >
+                            <Text>Check out</Text>
                         </TouchableOpacity>
                     </Card>
                     <Modal
@@ -336,6 +411,7 @@ class Order extends Component {
                     >
                         <View>
                             <RenderItem 
+                                onAdjustPrice={(item) => this.adjustPrice(item)}
                                 customizeItem={this.state.customizeItem}
                                 onShowCustomizeModal={(order) => this.toggleCustomizeModal(order)}
                             />
@@ -356,18 +432,12 @@ class Order extends Component {
                         >
                             <Text>Start order</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={styles.button}
                             onPress={() => console.log(this.state.orderArray)}
                         >
                             <Text>Console.log</Text>
-                        </TouchableOpacity>
-                        <CheckBox 
-                            title='remember me'
-                            center
-                            checked={this.state.remember}
-                            onPress={() => this.setState({remember: !this.state.remember})}
-                        />
+                        </TouchableOpacity> */}
                     </Card>
                     <Modal
                         animationType={'slide'}

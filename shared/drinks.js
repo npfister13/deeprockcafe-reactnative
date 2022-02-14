@@ -42,14 +42,19 @@ export const DRINKS = [
                 checked: false
             },
             {
-                name: "Lite Ice",
+                name: "Iced",
+                price: 0,
+                checked: false
+            },
+            {
+                name: "Light Ice",
                 price: 0,
                 checked: false
             },
             {
                 name: "No Ice",
                 price: 0,
-                checked: false
+                checked: true
             },
         ]
     },
@@ -96,14 +101,19 @@ export const DRINKS = [
                 checked: false
             },
             {
-                name: "Lite Ice",
+                name: "Iced",
+                price: 0,
+                checked: false
+            },
+            {
+                name: "Light Ice",
                 price: 0,
                 checked: false
             },
             {
                 name: "No Ice",
                 price: 0,
-                checked: false
+                checked: true
             },
         ]
     },
@@ -117,7 +127,7 @@ export const DRINKS = [
             {
                 name: "Whip Cream",
                 price: 1,
-                checked: true
+                checked: false
             },
             {
                 name: "Chocolate Syrup",
@@ -150,14 +160,19 @@ export const DRINKS = [
                 checked: false
             },
             {
-                name: "Lite Ice",
+                name: "Iced",
+                price: 0,
+                checked: false
+            },
+            {
+                name: "Light Ice",
                 price: 0,
                 checked: false
             },
             {
                 name: "No Ice",
                 price: 0,
-                checked: false
+                checked: true
             },
         ]
     },
@@ -171,7 +186,7 @@ export const DRINKS = [
             {
                 name: "Whip Cream",
                 price: 1,
-                checked: true
+                checked: false
             },
             {
                 name: "Chocolate Syrup",
@@ -204,14 +219,19 @@ export const DRINKS = [
                 checked: false
             },
             {
-                name: "Lite Ice",
+                name: "Iced",
+                price: 0,
+                checked: false
+            },
+            {
+                name: "Light Ice",
                 price: 0,
                 checked: false
             },
             {
                 name: "No Ice",
                 price: 0,
-                checked: false
+                checked: true
             },
         ]
     },
@@ -225,7 +245,7 @@ export const DRINKS = [
             {
                 name: "Whip Cream",
                 price: 1,
-                checked: true
+                checked: false
             },
             {
                 name: "Chocolate Syrup",
@@ -258,14 +278,19 @@ export const DRINKS = [
                 checked: false
             },
             {
-                name: "Lite Ice",
+                name: "Iced",
+                price: 0,
+                checked: false
+            },
+            {
+                name: "Light Ice",
                 price: 0,
                 checked: false
             },
             {
                 name: "No Ice",
                 price: 0,
-                checked: false
+                checked: true
             },
         ]
     },
@@ -277,49 +302,19 @@ export const DRINKS = [
         favorite: false,
         extras: [
             {
-                name: "Whip Cream",
-                price: 1,
-                checked: true
-            },
-            {
-                name: "Chocolate Syrup",
-                price: 1,
+                name: "Iced",
+                price: 0,
                 checked: false
             },
             {
-                name: "Caramel Syrup",
-                price: 1,
-                checked: false
-            },
-            {
-                name: "Chocolate Pump",
-                price: 1,
-                checked: false
-            },
-            {
-                name: "Vanilla Pump",
-                price: 1,
-                checked: false
-            },
-            {
-                name: "Caramel Pump",
-                price: 1,
-                checked: false
-            },
-            {
-                name: "Chocolate Shavings",
-                price: 1,
-                checked: false
-            },
-            {
-                name: "Lite Ice",
+                name: "Light Ice",
                 price: 0,
                 checked: false
             },
             {
                 name: "No Ice",
                 price: 0,
-                checked: false
+                checked: true
             },
         ]
     }
